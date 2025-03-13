@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Avatar: typeof import('./src/components/layout/Avatar.vue')['default']
     Editable: typeof import('./src/components/layout/Editable.vue')['default']
+    EditUserDialog: typeof import('./src/components/EditUserDialog.vue')['default']
     Header: typeof import('./src/components/template/template2/header.vue')['default']
     Header1: typeof import('./src/components/element/header/header1.vue')['default']
     ImgCutter: typeof import('./src/components/ImgCutter.vue')['default']
@@ -27,5 +28,6 @@ declare module 'vue' {
     Template2: typeof import('./src/components/template/template2/index.vue')['default']
     Template2header: typeof import('./src/components/template/template2/template2header.vue')['default']
     Template2Header: typeof import('./src/components/template/template2/template2-header.vue')['default']
+    UserInfo: typeof import('./src/components/layout/userInfo.vue')['default']
   }
 }
