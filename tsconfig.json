@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "include": [
+    "./**/*.ts",
+    "./**/*.d.ts",
+    "./**/*.vue",
+    "auto-imports.d.ts",
+  ]
+}
