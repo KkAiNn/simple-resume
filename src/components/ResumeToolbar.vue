@@ -3,9 +3,6 @@
     <Tooltip title="导出PDF">
       <Button type="primary" shape="circle" @click="$emit('export')"> 📄</Button>
     </Tooltip>
-    <Tooltip title="属性栏">
-      <Button shape="circle" @click="openSiderbar"> 🎨</Button>
-    </Tooltip>
   </div>
 </template>
 
@@ -15,9 +12,6 @@ import bus from '../utils/bus';
 
 defineEmits(["undo", "redo", "export"]);
 
-const openSiderbar = () => {
-  bus.emit('sendOpenSideBar', true)
-}
 
 </script>
 

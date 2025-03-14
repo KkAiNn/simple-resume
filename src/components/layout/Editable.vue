@@ -1,35 +1,35 @@
 <script lang="ts" setup>
 import { Input, Popconfirm, Switch } from 'ant-design-vue'
 
-const { modelValue: data = { text: '', enable: true }, class: propsClass = '' } = defineProps(['modelValue', 'emptyText', 'class'])
-const emit = defineEmits(['input', 'update:modelValue'])
+const { class: propsClass = '', value = null } = defineProps(['emptyText', 'class', 'value'])
+const emit = defineEmits(['confirm', 'update:modelValue'])
 const editableClass = computed(() => {
   return `editable ${propsClass}`
 })
 
 const state = ref({
-  text: data.text,
-  enable: data.enable
+  text: '',
+  enable: true
 })
 
 watchEffect(() => {
-  state.value = JSON.parse(JSON.stringify(data))
+  state.value = JSON.parse(JSON.stringify(value))
 })
 
 
 const openChange = (vis: boolean) => {
-  console.log(vis, data)
   if (vis) {
-    state.value = JSON.parse(JSON.stringify(data))
+    state.value = JSON.parse(JSON.stringify(value))
   }
 }
 
 const confirm = () => {
+  emit('confirm', state.value)
   emit('update:modelValue', state.value)
 }
 </script>
 <template>
-  <Popconfirm icon @openChange="openChange" @confirm="confirm" cancel-text="关闭">
+  <Popconfirm icon @openChange="openChange" @confirm="confirm" cancel-text="关闭" @click.stop>
     <template #icon></template>
     <template #title>
       <div class="w-[200px]">
@@ -39,9 +39,9 @@ const confirm = () => {
         </div>
       </div>
     </template>
-    <div :class="editableClass" v-if="data.enable">
+    <div :class="editableClass" v-if="value?.enable">
       <slot>
-        {{ data.text }}
+        {{ value.text }}
       </slot>
     </div>
   </Popconfirm>

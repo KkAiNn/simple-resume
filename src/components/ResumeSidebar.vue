@@ -1,13 +1,20 @@
 <template>
   <div class="sidebar overflow-y-auto" :class="{ 'show': isOpen }">
-    <div class="text-[28px] font-bold text-center w-full py-2">个人信息</div>
-    <div v-for="item, index in formArr" :key="index" class="py-[8px]">
-      <div class="backdrop-blur-8 w-full p-[12px] bg-[#ffffffbd] hover:bg-[#d8e3e7] cursor-pointer rounded-[8px]">
-        <div class="text-center text-[18px] font-medium">{{ item.name }}</div>
-        <div class="flex items-center justify-between py-[8px] gap-8">
-          <Input v-model:value="item.text" v-if="item.name !== '头像'" />
-          <Button @click="uploadAvatar" v-else>点击上传头像</Button>
-          <Switch v-model:checked="item.enable" checked-children="展" un-checked-children="关" size="default" />
+    <div id="userInfo-sidebar">
+      <div class="text-[28px] font-bold text-center w-full py-2">个人信息</div>
+      <div class="bg-[#ffffffbd] backdrop-blur-8 rounded-[8px]">
+        <div v-for="item, index in formArr" :key="index" class="" :class="{ 'info-item': item.type === 'info' }">
+          <div class=" w-full px-[8px] py-[4px]  hover:bg-[#d8e3e7] cursor-pointer transition">
+            <div class=" text-[18px] font-medium">
+              <span>{{ item.name }}</span>
+              <div class=""></div>
+            </div>
+            <div class="flex items-center justify-between py-[8px] gap-8">
+              <Input v-model:value="item.text" v-if="item.name !== '头像'" />
+              <Button @click="uploadAvatar" v-else>点击上传头像</Button>
+              <Switch v-model:checked="item.enable" checked-children="展" un-checked-children="关" size="default" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -32,16 +39,23 @@ const formArr = computed(() => {
   let arr = []
   for (const key in form.value) {
     const element = form.value[key];
+    console.log(key)
+    if (key === 'info') {
+      console.log('info')
+      element.forEach((e) => {
+        e.type = 'info'
+      })
+    }
     arr.push(element)
   }
-  return arr
+  return arr.flat()
 })
 
 const isOpen = ref(false)
 
 const hasEnable = computed(() => {
   let flag = false
-  for (const key in form.value) {
+  for (const key in form.value.info) {
     if (Object.hasOwnProperty.call(form.value, key)) {
       const element = form.value[key];
       if (!element.enable) {
@@ -49,6 +63,9 @@ const hasEnable = computed(() => {
       }
     }
   }
+  if (!form.value.avatar.enable) flag = true
+  if (!form.value.name.enable) flag = true
+  if (!form.value.desc.enable) flag = true
   return flag
 })
 
@@ -58,6 +75,7 @@ watch(() => hasEnable.value, () => {
 })
 
 const uploadAvatar = async (e: Event) => {
+  console.log(formArr.value)
   document.getElementById('filed').click()
 }
 

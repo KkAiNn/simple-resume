@@ -15,41 +15,35 @@ export const useResumeStore = defineStore('resume', () => {
         text: '张三',
         enable: true
       },
-      sex: {
+      info: [{
         name: '性别',
         text: '男',
         enable: true
-      },
-      age: {
+      }, {
         name: '年龄',
         text: '20',
         enable: true
-      },
-      workTime: {
-        name: '姓名',
+      }, {
+        name: '工龄',
         text: '3年',
         enable: true
-      },
-      education: {
+      }, {
         name: '学历',
         text: '本科',
         enable: true
-      },
-      phone: {
+      }, {
         name: '手机号',
         text: '15029388441',
         enable: true
-      },
-      email: {
+      }, {
         name: '邮箱',
         text: 'user@resume.com',
         enable: true
-      },
-      job: {
+      }, {
         name: '意向岗位',
         text: '意向岗位',
         enable: true
-      },
+      },],
       desc: {
         name: '在职状态',
         text: '已离职，正在寻找工作',
