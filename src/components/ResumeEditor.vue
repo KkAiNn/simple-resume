@@ -4,7 +4,7 @@
     <div class="flex-1 flex overflow-hidden ">
       <!-- <ResumeSidebar @addElement="addElement" /> -->
       <ResumeCanvas :elements="elements" @update="updateElement" @delete="deleteElement" ref="canvasRef" />
-      <!-- <ResumeSidebar @addElement="addElement" /> -->
+      <ResumeSidebar @addElement="addElement" />
     </div>
   </div>
 </template>

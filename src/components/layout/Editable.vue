@@ -7,22 +7,25 @@ const editableClass = computed(() => {
   return `editable ${propsClass}`
 })
 
-const state = reactive({
+const state = ref({
   text: data.text,
   enable: data.enable
+})
+
+watchEffect(() => {
+  state.value = JSON.parse(JSON.stringify(data))
 })
 
 
 const openChange = (vis: boolean) => {
   console.log(vis, data)
   if (vis) {
-    state.text = data.text
-    state.enable = data.enable
+    state.value = JSON.parse(JSON.stringify(data))
   }
 }
 
 const confirm = () => {
-  emit('update:modelValue', state)
+  emit('update:modelValue', state.value)
 }
 </script>
 <template>

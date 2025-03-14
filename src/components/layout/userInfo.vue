@@ -1,50 +1,9 @@
 <script lang="ts" setup>
 import Sortable from "sortablejs"
+import { useResumeStore } from "../../stores/resume"
+const { resume } = storeToRefs(useResumeStore())
 
-const editUserDialogRef = ref()
-const form = ref({
-  name: {
-    text: '张三',
-    enable: true
-  },
-  sex: {
-    text: '男',
-    enable: true
-  },
-  age: {
-    text: '20',
-    enable: true
-  },
-  workTime: {
-    text: '3年',
-    enable: true
-  },
-  education: {
-    text: '本科',
-    enable: true
-  },
-  phone: {
-    text: '15029388441',
-    enable: true
-  },
-  email: {
-    text: 'user@resume.com',
-    enable: true
-  },
-  job: {
-    text: '意向岗位',
-    enable: true
-  },
-  desc: {
-    text: '已离职，正在寻找工作',
-    enable: true
-  }
-})
-
-
-const handleEditUserInfo = () => {
-  editUserDialogRef.value.open()
-}
+const form = computed(() => { return resume.value.profile })
 
 onMounted(() => {
   const el = document.querySelector('#userInfo_desc')
@@ -58,11 +17,7 @@ onMounted(() => {
 
 <template>
   <div class="userInfo flex flex-col gap-5" title="点击编辑信息">
-    <Editable class=" w-fit" v-model="form.name">
-      <div class="name  text-[36px]">
-        {{ form.name.text }}
-      </div>
-    </Editable>
+    <Editable class="px-[8px] text-[36px] w-fit" v-model="form.name"></Editable>
     <div class="flex flex-wrap items-center" id="userInfo_desc" title="按住拖拽排序">
       <Editable class="info-item" v-model="form.sex"></Editable>
       <Editable class="info-item" v-model="form.age"></Editable>
@@ -80,7 +35,6 @@ onMounted(() => {
     </div>
     <Editable class="info-item" v-model="form.desc"></Editable>
   </div>
-  <EditUserDialog ref="editUserDialogRef" />
 </template>
 
 <style lang="scss" scoped>

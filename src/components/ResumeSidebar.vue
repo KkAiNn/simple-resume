@@ -1,72 +1,79 @@
 <template>
-  <div class="sidebar">
-    <h3 contenteditable @beforeinput="onBeforeInput" @input="onInput" @paste="onPaste">属性</h3>
-    <button @click="$emit('addElement', 'text')">文本</button>
-    <button @click="$emit('addElement', 'image')">图片</button>
-    <button @click="$emit('addElement', 'icon')">图标</button>
+  <div class="sidebar overflow-y-auto" :class="{ 'show': isOpen }">
+    <div class="text-[28px] font-bold text-center w-full py-2">个人信息</div>
+    <div v-for="item, index in formArr" :key="index" class="py-[8px]">
+      <div class="backdrop-blur-8 w-full p-[12px] bg-[#ffffffbd] hover:bg-[#d8e3e7] cursor-pointer rounded-[8px]">
+        <div class="text-center text-[18px] font-medium">{{ item.name }}</div>
+        <div class="flex items-center justify-between py-[8px] gap-8">
+          <Input v-model:value="item.text" v-if="item.name !== '头像'" />
+          <Switch v-model:checked="item.enable" checked-children="展" un-checked-children="关" size="default" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-/**
- * 重点关注的输入类型
- */
-const ALLOW_INPUT_TYPE = [
-  // 输入类型
-  'insertParagraph', // 输入新行 (直接按下 回车)
-  'insertLineBreak', // 输入换行符 (按下 shift + 回车)
-  'insertText', // 输入文本
-  'insertCompositionText', // 中文合成输入
-  'insertFromPaste', // 粘贴输入
-  'insertFromDrop', // 从别的地方拖拽输入，在 firefox 中尝试
-  // 删除类型
-  'deleteContentBackward', // 向前删除，即直接按下删除键
-  'deleteContentForward', // 向后删除，win 按下 delete 键，mac 按下 fn + delete
-  'deleteByCut', // 剪切，通过 ctrl + x 或 cmd + x 剪切
-  'deleteByDrag', // 从当前输入框中拖拽到其他地方
-  // 历史
-  'historyUndo', // ctrl + z 或 cmd + z
-  'historyRedo', // ctrl + shift + z 或 cmd + shift + z
-]
+import { Input, Switch } from 'ant-design-vue';
+import { useResumeStore } from '../stores/resume';
 
-// 在 onBeforeInput 中对非重点关注事件类型直接阻止
-const onBeforeInput = (event: InputEvent) => {
-  const target = (event.target as HTMLElement);
-  const eventType = event.inputType;
+const { resume } = storeToRefs(useResumeStore())
+const form = computed(() => { return resume.value.profile })
 
-  // 非重点关注的事件类型直接阻止
-  if (!ALLOW_INPUT_TYPE.includes(eventType)) {
-    event.preventDefault();
-    return;
+const formArr = computed(() => {
+  let arr = []
+  for (const key in form.value) {
+    const element = form.value[key];
+    arr.push(element)
   }
+  return arr
+})
 
-}
-const onInput = (event) => {
-  console.log(event);
-}
+const isOpen = ref(false)
 
-const onPaste = (event: ClipboardEvent) => {
-  // 阻止默认事件，否则系统会派发一个 data 为 null 的 beforeinput 与 input 事件
-  // event.preventDefault();
-  // // 获取输入的纯文本内容
-  // const pasteText = event.clipboardData?.getData("text") || '';
-  // // 手动触发一个 beforeinput 事件，虽然这里 inputType 可以随意填写，为了语义化以及后续排错等，还是按规定触发 insertFromPaste 类型的事件。
-  // if (pasteText) {
-  //   event.target?.dispatchEvent(new InputEvent('beforeinput', {
-  //     inputType: 'insertFromPaste',
-  //     data: pasteText,
-  //     bubbles: true,
-  //     cancelable: true
-  //   }))
-  // }
-}
+const hasEnable = computed(() => {
+  let flag = false
+  for (const key in form.value) {
+    if (Object.hasOwnProperty.call(form.value, key)) {
+      const element = form.value[key];
+      if (!element.enable) {
+        flag = true
+      }
+    }
+  }
+  return flag
+})
+
+watch(() => hasEnable.value, () => {
+  if (!isOpen.value)
+    isOpen.value = hasEnable.value
+})
+
+// watchEffect(() => {
+//   if (hasEnable.value && !isOpen.value) {
+//     isOpen.value = true
+//   } else {
+//     isOpen.value = false
+//   }
+// })
+
+// const isOpen = computed(() => {
+//   return hasEnable.value
+// })
+
+
 </script>
 
 <style scoped>
 .sidebar {
-  width: 200px;
-  background: #ffffffbd;
-  padding: 10px;
+  width: 0;
+  transition: all 0.3s;
+
+  &.show {
+    background: #ffffffbd;
+    padding: 10px;
+    width: 400px;
+  }
 }
 
 button {

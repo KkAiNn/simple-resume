@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Divider, Tooltip } from 'ant-design-vue';
 import Avatar from '../../layout/Avatar.vue';
+import { useResumeStore } from '../../../stores/resume';
+const { resume } = storeToRefs(useResumeStore())
 defineOptions({
   name: 'template1-header'
 })
 </script>
 
 <template>
-  <div class="flex items-center border-b-[1px] border-b-solid border-b-[#d9d9d9] pb-[20px] header-info">
-    <Avatar />
+  <div class="flex  border-b-[1px] border-b-solid border-b-[#d9d9d9] pb-[20px] header-info">
+    <Avatar v-if="resume.profile.avatar.enable" />
     <UserInfo />
   </div>
 </template>
