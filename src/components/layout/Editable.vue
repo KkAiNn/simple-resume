@@ -1,25 +1,45 @@
 <script lang="ts" setup>
-const porps = defineProps(['modelValue', 'emptyText', 'class'])
+import { Input, Popconfirm, Switch } from 'ant-design-vue'
+
+const { modelValue: data = { text: '', enable: true }, class: propsClass = '' } = defineProps(['modelValue', 'emptyText', 'class'])
 const emit = defineEmits(['input', 'update:modelValue'])
 const editableClass = computed(() => {
-  return `editable ${porps.class}`
+  return `editable ${propsClass}`
 })
-const input = (e: Event) => {
-  // @ts-ignore
-  let text = e.target.innerText
-  emit('input', text)
+
+const state = reactive({
+  text: data.text,
+  enable: data.enable
+})
+
+
+const openChange = (vis: boolean) => {
+  console.log(vis, data)
+  if (vis) {
+    state.text = data.text
+    state.enable = data.enable
+  }
 }
 
-
-const onBlur = (e) => {
-  let text: string = e.target.innerText
-  console.log(text)
-  emit('update:modelValue', text.replace(/\n/g, ''))
+const confirm = () => {
+  emit('update:modelValue', state)
 }
-
 </script>
 <template>
-  <div :class="editableClass" contenteditable @input="input" @blur="onBlur">
-    <slot>{{ modelValue }}</slot>
-  </div>
+  <Popconfirm icon @openChange="openChange" @confirm="confirm" cancel-text="关闭">
+    <template #icon></template>
+    <template #title>
+      <div class="w-[200px]">
+        <div class="flex items-center gap-6">
+          <Input v-model:value="state.text" />
+          <Switch v-model:checked="state.enable" checked-children="展" un-checked-children="关" />
+        </div>
+      </div>
+    </template>
+    <div :class="editableClass" v-if="data.enable">
+      <slot>
+        {{ data.text }}
+      </slot>
+    </div>
+  </Popconfirm>
 </template>

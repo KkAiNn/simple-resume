@@ -5,12 +5,11 @@
   &:hover {
     border-radius: 2px;
     border: 1px solid #bbb;
-    cursor: text;
+    cursor: pointer;
   }
 
   &:focus {
     border-color: #1e9fff;
     box-shadow: 0 0 5px #1e9fff;
   }
-
 }

@@ -14,6 +14,7 @@ declare module 'vue' {
     Header: typeof import('./src/components/template/template2/header.vue')['default']
     Header1: typeof import('./src/components/element/header/header1.vue')['default']
     ImgCutter: typeof import('./src/components/ImgCutter.vue')['default']
+    QuestionCircleOutlined: typeof import('@ant-design/icons-vue')['QuestionCircleOutlined']
     Resume: typeof import('./src/components/resume.vue')['default']
     Resume_grid: typeof import('./src/components/resume_grid.vue')['default']
     ResumeCanvas: typeof import('./src/components/ResumeCanvas.vue')['default']
