@@ -6,6 +6,7 @@
         <div class="text-center text-[18px] font-medium">{{ item.name }}</div>
         <div class="flex items-center justify-between py-[8px] gap-8">
           <Input v-model:value="item.text" v-if="item.name !== '头像'" />
+          <Button @click="uploadAvatar" v-else>点击上传头像</Button>
           <Switch v-model:checked="item.enable" checked-children="展" un-checked-children="关" size="default" />
         </div>
       </div>
@@ -14,8 +15,15 @@
 </template>
 
 <script lang="ts" setup>
-import { Input, Switch } from 'ant-design-vue';
+import { Button, Input, Switch } from 'ant-design-vue';
 import { useResumeStore } from '../stores/resume';
+import bus from '../utils/bus';
+
+onMounted(() => {
+  bus.on('sendOpenSideBar', () => {
+    isOpen.value = !isOpen.value
+  })
+})
 
 const { resume } = storeToRefs(useResumeStore())
 const form = computed(() => { return resume.value.profile })
@@ -49,30 +57,23 @@ watch(() => hasEnable.value, () => {
     isOpen.value = hasEnable.value
 })
 
-// watchEffect(() => {
-//   if (hasEnable.value && !isOpen.value) {
-//     isOpen.value = true
-//   } else {
-//     isOpen.value = false
-//   }
-// })
-
-// const isOpen = computed(() => {
-//   return hasEnable.value
-// })
-
+const uploadAvatar = async (e: Event) => {
+  document.getElementById('filed').click()
+}
 
 </script>
 
 <style scoped>
 .sidebar {
   width: 0;
+  transform: translateX(400px);
   transition: all 0.3s;
 
   &.show {
     background: #ffffffbd;
-    padding: 10px;
     width: 400px;
+    padding: 10px;
+    transform: translateX(0);
   }
 }
 

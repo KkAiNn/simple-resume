@@ -16,6 +16,7 @@
     "ant-design-vue": "4.x",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.0",
+    "mitt": "^3.0.1",
     "pinia": "^3.0.1",
     "sortablejs": "^1.15.6",
     "uuid": "^11.1.0",

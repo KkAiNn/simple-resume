@@ -15,7 +15,6 @@ const filePreview = (e) => {
   let reader = new FileReader()
   reader.readAsDataURL(files) // 文件转换
   reader.onloadend = function (e) {
-    console.log(e)
     resume.value.profile.avatar.src = e.target.result as string
   }
 }
